@@ -2,11 +2,26 @@ from enum import Enum
 import json
 from typing import Sequence
 import redditwarp.SYNC
+import redditwarp.models.subreddit
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
 from mcp.shared.exceptions import McpError
 from pydantic import BaseModel
+
+# Workaround for redditwarp bug: Reddit sometimes omits 'active_user_count'
+# from subreddit JSON, causing KeyError in Subreddit.__init__.
+if not getattr(redditwarp.models.subreddit.Subreddit.__init__, '_patched', False):
+    _original_subreddit_init = redditwarp.models.subreddit.Subreddit.__init__
+
+    def _patched_subreddit_init(self, d, *args, **kwargs):
+        if 'active_user_count' not in d:
+            d = dict(d)
+            d['active_user_count'] = None
+        _original_subreddit_init(self, d, *args, **kwargs)
+
+    _patched_subreddit_init._patched = True
+    redditwarp.models.subreddit.Subreddit.__init__ = _patched_subreddit_init
 
 
 class PostType(str, Enum):
