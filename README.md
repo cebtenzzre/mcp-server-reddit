@@ -49,18 +49,90 @@ A demo in Clinde 👇
   - Optional arguments:
     - `limit` (integer): Number of posts to return (default: 10, range: 1-100)
 
+- `search_reddit_posts` - Search posts across Reddit
+  - Required arguments:
+    - `query` (string): Search query
+  - Optional arguments:
+    - `limit` (integer): Number of posts to return (default: 25, range: 1-100)
+    - `sort` (string): Sort order (default: 'relevance', options: 'relevance', 'hot', 'top', 'new', 'comments')
+    - `time` (string): Time filter (default: 'all', options: 'all', 'hour', 'day', 'week', 'month', 'year')
+
+- `search_subreddit_posts` - Search posts in a specific subreddit
+  - Required arguments:
+    - `subreddit_name` (string): Name of the subreddit (e.g. 'Python', 'news')
+    - `query` (string): Search query
+  - Optional arguments:
+    - `limit` (integer): Number of posts to return (default: 25, range: 1-100)
+    - `sort` (string): Sort order (default: 'relevance', options: 'relevance', 'hot', 'top', 'new', 'comments')
+    - `time` (string): Time filter (default: 'all', options: 'all', 'hour', 'day', 'week', 'month', 'year')
+
+- `search_subreddits` - Search subreddits by name or description
+  - Required arguments:
+    - `query` (string): Search query
+  - Optional arguments:
+    - `limit` (integer): Number of subreddits to return (default: 25, range: 1-100)
+
+- `search_post_comments` - Search fetched comments from a Reddit post ID or URL
+  - Required arguments:
+    - `post_id` (string): Post ID, `t3_` fullname, or Reddit comments URL
+    - `query` (string): Comment search query
+  - Optional arguments:
+    - `result_limit` (integer): Maximum matching comments to return (default: 25, range: 1-100)
+    - `comment_limit` (integer): Number of comments to fetch before local matching (default: 500, range: 1-500)
+    - `depth` (integer): Maximum comment-tree depth (default: 10, range: 1-10)
+    - `sort` (string): Comment sort (default: 'confidence', options: 'confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live')
+    - `match_mode` (string): Local matching mode (default: 'any_terms', options: 'any_terms', 'all_terms', 'phrase')
+    - `expand_more` (boolean): Expand Reddit "load more comments" branches (default: true)
+    - `max_more_batches` (integer): Maximum more-comments batches to expand (default: 10, range: 0-25)
+
+- `search_reddit_url_comments` - Search comments from a batch of Reddit post URLs or IDs
+  - Required arguments:
+    - `post_urls` (array): Reddit post URLs, IDs, or `t3_` fullnames from a search engine
+    - `query` (string): Comment search query
+  - Optional arguments:
+    - `result_limit` (integer): Maximum matching comments to return across all posts (default: 25, range: 1-100)
+    - `comment_limit` (integer): Number of comments to fetch per post before local matching (default: 500, range: 1-500)
+    - `depth` (integer): Maximum comment-tree depth (default: 10, range: 1-10)
+    - `sort` (string): Comment sort (default: 'confidence', options: 'confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live')
+    - `match_mode` (string): Local matching mode (default: 'any_terms', options: 'any_terms', 'all_terms', 'phrase')
+    - `expand_more` (boolean): Expand Reddit "load more comments" branches (default: true)
+    - `max_more_batches_per_post` (integer): Maximum more-comments batches to expand per post (default: 10, range: 0-25)
+
+- `search_reddit_discussions` - Search posts, then search comments from those candidate posts
+  - Required arguments:
+    - `query` (string): Search query
+  - Optional arguments:
+    - `subreddit_name` (string): Optional subreddit to restrict the post search
+    - `post_limit` (integer): Number of candidate posts to inspect (default: 10, range: 1-50)
+    - `result_limit` (integer): Maximum matching comments to return (default: 25, range: 1-100)
+    - `post_sort` (string): Post search sort (default: 'relevance', options: 'relevance', 'hot', 'top', 'new', 'comments')
+    - `post_time` (string): Post search time filter (default: 'all', options: 'all', 'hour', 'day', 'week', 'month', 'year')
+    - `comment_limit` (integer): Number of comments to fetch per post before local matching (default: 500, range: 1-500)
+    - `comment_depth` (integer): Maximum comment-tree depth (default: 10, range: 1-10)
+    - `comment_sort` (string): Comment sort (default: 'confidence', options: 'confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live')
+    - `match_mode` (string): Local matching mode (default: 'any_terms', options: 'any_terms', 'all_terms', 'phrase')
+    - `expand_more` (boolean): Expand Reddit "load more comments" branches (default: true)
+    - `max_more_batches_per_post` (integer): Maximum more-comments batches to expand per post (default: 5, range: 0-25)
+
 - `get_post_content` - Get detailed content of a specific post
   - Required arguments:
-    - `post_id` (string): ID of the post
+    - `post_id` (string): Post ID, `t3_` fullname, or Reddit comments URL
   - Optional arguments:
-    - `comment_limit` (integer): Number of top-level comments to return (default: 10, range: 1-100)
+    - `comment_limit` (integer): Number of top-level comments to return (default: 10, range: 1-500)
     - `comment_depth` (integer): Maximum depth of comment tree (default: 3, range: 1-10)
+    - `comment_sort` (string): Comment sort (default: 'top', options: 'confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live')
+    - `expand_more` (boolean): Expand Reddit "load more comments" branches (default: false)
+    - `max_more_batches` (integer): Maximum more-comments batches to expand (default: 0, range: 0-25)
 
 - `get_post_comments` - Get comments from a post
   - Required arguments:
-    - `post_id` (string): ID of the post
+    - `post_id` (string): Post ID, `t3_` fullname, or Reddit comments URL
   - Optional arguments:
-    - `limit` (integer): Number of comments to return (default: 10, range: 1-100)
+    - `limit` (integer): Number of comments to return (default: 10, range: 1-500)
+    - `depth` (integer): Maximum depth of comment tree (default: 3, range: 1-10)
+    - `sort` (string): Comment sort (default: 'top', options: 'confidence', 'top', 'new', 'controversial', 'old', 'random', 'qa', 'live')
+    - `expand_more` (boolean): Expand Reddit "load more comments" branches (default: false)
+    - `max_more_batches` (integer): Maximum more-comments batches to expand (default: 0, range: 0-25)
 
 
 ## Installation
@@ -103,6 +175,14 @@ npx -y @smithery/cli install @Hawstein/mcp-server-reddit --client claude
 ```
 
 ## Configuration
+
+### User-Agent
+
+Set `REDDIT_USER_AGENT` to override the default User-Agent.
+
+### Search Engine Handoff
+
+Reddit's public API searches submissions, not the full comment corpus. For comment-first discovery, use a web-search MCP or search engine with queries like `site:reddit.com/r/<subreddit>/comments <terms>`, then pass the returned Reddit URLs to `search_reddit_url_comments`. This server will normalize `www.reddit.com`, `old.reddit.com`, `t3_` fullnames, and raw post IDs, then fetch and locally search expanded comments through Reddit's API.
 
 ### Configure for Claude.app
 
@@ -172,6 +252,11 @@ Add to your Zed settings.json:
 - "Show me the newest posts from r/ClaudeAI" (get_subreddit_new_posts)
 - "What are the top posts of all time in r/ClaudeAI?" (get_subreddit_top_posts)
 - "What posts are trending in r/ClaudeAI right now?" (get_subreddit_rising_posts)
+- "Search Reddit for posts about people switching away from product X." (search_reddit_posts)
+- "Search r/SaaS for anecdotes about churn after pricing changes." (search_subreddit_posts)
+- "Find comments in this Reddit thread mentioning battery degradation: [post_url]" (search_post_comments)
+- "Search these Reddit URLs from web search for comments about refunds: [post_urls]" (search_reddit_url_comments)
+- "Search Reddit discussions for comments about people regretting a purchase." (search_reddit_discussions)
 - "Get the full content and comments of this Reddit post: [post_url]" (get_post_content)
 - "Summarize the comments on this Reddit post: [post_url]" (get_post_comments)
 
